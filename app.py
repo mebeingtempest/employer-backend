@@ -30,7 +30,7 @@ def testdb():
     except Exception as e:
         return str(e), 500
 
-# --- Example search route ---
+# --- Universal employer search route ---
 @app.route("/search", methods=["GET"])
 def search():
     try:
@@ -39,18 +39,39 @@ def search():
         conn = get_connection()
         cursor = conn.cursor()
 
+        results = set()  # use a set to avoid duplicates
+
+        # Search Regions table
         cursor.execute(
-            "SELECT TOP 10 EmployerName FROM Employers WHERE EmployerName LIKE ?",
+            "SELECT EmployerName FROM Regions WHERE EmployerName LIKE ?",
             f"%{query}%"
         )
-        rows = cursor.fetchall()
+        for row in cursor.fetchall():
+            if row[0]:
+                results.add(row[0])
 
-        results = [row[0] for row in rows]
+        # Search Industries table
+        cursor.execute(
+            "SELECT EmployerName FROM Industries WHERE EmployerName LIKE ?",
+            f"%{query}%"
+        )
+        for row in cursor.fetchall():
+            if row[0]:
+                results.add(row[0])
+
+        # Search DatePosted table
+        cursor.execute(
+            "SELECT EmployerName FROM DatePosted WHERE EmployerName LIKE ?",
+            f"%{query}%"
+        )
+        for row in cursor.fetchall():
+            if row[0]:
+                results.add(row[0])
 
         cursor.close()
         conn.close()
 
-        return jsonify(results)
+        return jsonify(list(results))
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

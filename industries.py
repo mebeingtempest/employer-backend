@@ -26,15 +26,19 @@ def get_industries():
         params.append(subindustry)
 
     if scale:
-        query += " AND scale = ?"
+        query += " AND Scale = ?"
         params.append(scale)
 
     if type_:
-        query += " AND type = ?"
+        query += " AND Type = ?"
         params.append(type_)
 
     cursor.execute(query, params)
     rows = cursor.fetchall()
 
-    results = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+    results = [
+        dict(zip([column[0] for column in cursor.description], row))
+        for row in rows
+    ]
+
     return jsonify(results)
