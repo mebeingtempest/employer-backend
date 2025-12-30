@@ -26,7 +26,7 @@ def home():
 def testdb():
     try:
         conn = get_connection()
-        return "Connected to SQL. Woo!"
+        return "Connected to SQL. Woohoo!"
     except Exception as e:
         return str(e), 500
 
