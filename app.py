@@ -2,14 +2,20 @@ from flask import Flask, request, jsonify
 import os
 import pyodbc
 
+from regions import regions_bp
+from industries import industries_bp
+from date_posted import dateposted_bp 
+
 app = Flask(__name__)
+
+app.register_blueprint(regions_bp)
+app.register_blueprint(industries_bp)
+app.register_blueprint(dateposted_bp)
 
 # --- Database connection helper ---
 def get_connection():
-    # Pull the base connection string from Azure App Service environment variables
     base_conn_str = os.getenv("CONNECTION_STRING")
 
-    # Ensure the ODBC driver is included (Azure App Service supports ODBC Driver 18)
     conn_str = (
         f"Driver={{ODBC Driver 18 for SQL Server}};"
         f"{base_conn_str}"
@@ -39,7 +45,7 @@ def search():
         conn = get_connection()
         cursor = conn.cursor()
 
-        results = set()  # use a set to avoid duplicates
+        results = set()
 
         # Search Regions table
         cursor.execute(
