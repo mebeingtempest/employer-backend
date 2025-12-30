@@ -22,6 +22,14 @@ def get_connection():
 def home():
     return "Backend is running!"
 
+@app.route("/testdb")
+def testdb():
+    try:
+        conn = get_connection()
+        return "Connected to SQL!"
+    except Exception as e:
+        return str(e), 500
+
 # --- Example search route ---
 @app.route("/search", methods=["GET"])
 def search():
