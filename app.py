@@ -33,20 +33,24 @@ def testdb():
 # --- Example search route ---
 @app.route("/search", methods=["GET"])
 def search():
-    query = request.args.get("q", "")
+    try:
+        query = request.args.get("q", "")
 
-    conn = get_connection()
-    cursor = conn.cursor()
+        conn = get_connection()
+        cursor = conn.cursor()
 
-    cursor.execute(
-        "SELECT TOP 10 EmployerName FROM Employers WHERE EmployerName LIKE ?",
-        f"%{query}%"
-    )
-    rows = cursor.fetchall()
+        cursor.execute(
+            "SELECT TOP 10 EmployerName FROM Employers WHERE EmployerName LIKE ?",
+            f"%{query}%"
+        )
+        rows = cursor.fetchall()
 
-    results = [row[0] for row in rows]
+        results = [row[0] for row in rows]
 
-    cursor.close()
-    conn.close()
+        cursor.close()
+        conn.close()
 
-    return jsonify(results)
+        return jsonify(results)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
