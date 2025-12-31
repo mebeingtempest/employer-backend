@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from db import get_connection
 import traceback
 
-dateposted_bp = Blueprint("dateposted", __name__)
+dateposted_bp = Blueprint("date-posted", __name__)
 
 @dateposted_bp.get("/date-posted")   # <-- FIXED: matches frontend
 def get_date_posted():
