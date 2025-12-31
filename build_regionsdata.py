@@ -5,7 +5,7 @@ import json
 # 1. Your SQL connection string
 #    (Paste your existing working connection string here)
 # -----------------------------------------
-CONNECTION_STRING = "Server=tcp:employer-search.database.windows.net,1433; Database=employersearch; Uid=Selfaryadmin; Pwd=akdivHYF23#%@; Encrypt=yes; TrustServerCertificate=no; Connection Timeout=30;"
+CONNECTION_STRING = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:employer-search.database.windows.net,1433; Database=employersearch; Uid=Selfaryadmin; Pwd=akdivHYF23#%@; Encrypt=yes; TrustServerCertificate=no; Connection Timeout=30;"
 
 
 # -----------------------------------------
@@ -46,7 +46,7 @@ data = [dict(zip(columns, row)) for row in rows]
 # -----------------------------------------
 # 5. Save to /public/regionsdata.json
 # -----------------------------------------
-with open("public/regionsdata.json", "w") as f:
+with open("../frontend/public/regionsdata.json", "w") as f:
     json.dump(data, f, indent=2)
 
 print("regionsdata.json created successfully!")
