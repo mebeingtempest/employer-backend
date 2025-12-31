@@ -1,42 +1,48 @@
 # date_posted.py
 from flask import Blueprint, request, jsonify
 from db import get_connection
+import traceback
 
 dateposted_bp = Blueprint("dateposted", __name__)
 
-@dateposted_bp.get("/date-posted")
-def get_date_posted():
-    date_posted = request.args.get("datePosted")
-    scale = request.args.get("scale")
-    type_ = request.args.get("type")
+@dateposted_bp.get("/dateposted")
+def get_jobs_by_date():
+    try:
+        date_posted = request.args.get("DatePosted")
+        scale = request.args.get("Scale")
+        type_ = request.args.get("Type")
 
-    conn = get_connection()
-    cursor = conn.cursor()
+        conn = get_connection()
+        cursor = conn.cursor()
 
-    query = "SELECT * FROM DatePosted WHERE 1=1"
-    params = []
+        # query = "SELECT TOP 5000 * FROM DatePosted WHERE 1=1"
+        query = "SELECT * FROM DatePosted WHERE 1=1"
+        params = []
 
-    # Correct column name: DatePosted
-    if date_posted:
-        query += " AND DatePosted = ?"
-        params.append(date_posted)
+        if date_posted:
+            query += " AND DatePosted = ?"
+            params.append(date_posted)
 
-    # Correct column name: Scale
-    if scale:
-        query += " AND Scale = ?"
-        params.append(scale)
+        if scale:
+            query += " AND Scale = ?"
+            params.append(scale)
 
-    # Correct column name: Type
-    if type_:
-        query += " AND Type = ?"
-        params.append(type_)
+        if type_:
+            query += " AND Type = ?"
+            params.append(type_)
 
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
 
-    results = [
-        dict(zip([column[0] for column in cursor.description], row))
-        for row in rows
-    ]
+        columns = [column[0] for column in cursor.description]
+        results = [dict(zip(columns, row)) for row in rows]
 
-    return jsonify(results)
+        cursor.close()
+        conn.close()
+
+        return jsonify(results)
+
+    except Exception as e:
+        print("Error in /dateposted endpoint:")
+        print(traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
