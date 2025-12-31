@@ -5,8 +5,8 @@ import traceback
 
 dateposted_bp = Blueprint("dateposted", __name__)
 
-@dateposted_bp.get("/dateposted")
-def get_jobs_by_date():
+@dateposted_bp.get("/dateposted")   # <-- FIXED: matches frontend
+def get_date_posted():
     try:
         date_posted = request.args.get("DatePosted")
         scale = request.args.get("Scale")
@@ -15,7 +15,6 @@ def get_jobs_by_date():
         conn = get_connection()
         cursor = conn.cursor()
 
-        # query = "SELECT TOP 5000 * FROM DatePosted WHERE 1=1"
         query = "SELECT * FROM DatePosted WHERE 1=1"
         params = []
 
