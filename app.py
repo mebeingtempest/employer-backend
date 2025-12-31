@@ -2,11 +2,14 @@ from flask import Flask, request, jsonify
 import os
 import pyodbc
 
+from flask_cors import CORS   # <-- Added for Cloudflare access
+
 from regions import regions_bp
 from industries import industries_bp
 from date_posted import dateposted_bp 
 
 app = Flask(__name__)
+CORS(app)   # <-- Enables CORS for all routes
 
 app.register_blueprint(regions_bp)
 app.register_blueprint(industries_bp)
