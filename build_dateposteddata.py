@@ -22,14 +22,12 @@ cursor = conn.cursor()
 cursor.execute("""
     SELECT 
         ID,
-        State,
-        City_Town_Other,
+        DatePosted,
         EmployerLink,
         EmployerName,
         Scale,
-        Type,
-        Population
-    FROM Regions
+        Type
+    FROM DatePosted
 """)
 
 rows = cursor.fetchall()
@@ -44,9 +42,9 @@ data = [dict(zip(columns, row)) for row in rows]
 
 
 # -----------------------------------------
-# 5. Save to /public/regionsdata.json
+# 5. Save to /public/dateposteddata.json
 # -----------------------------------------
-with open("../frontend/public/regionsdata.json", "w") as f:
+with open("../frontend/public/dateposteddata.json", "w") as f:
     json.dump(data, f, indent=2)
 
-print("regionsdata.json created successfully!")
+print("dateposteddata.json created successfully!")
