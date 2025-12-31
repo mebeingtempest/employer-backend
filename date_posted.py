@@ -5,7 +5,7 @@ import traceback
 
 dateposted_bp = Blueprint("dateposted", __name__)
 
-@dateposted_bp.get("/dateposted")   # <-- FIXED: matches frontend
+@dateposted_bp.get("/date-posted")   # <-- FIXED: matches frontend
 def get_date_posted():
     try:
         date_posted = request.args.get("DatePosted")
