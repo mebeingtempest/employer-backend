@@ -44,7 +44,7 @@ data = [dict(zip(columns, row)) for row in rows]
 # -----------------------------------------
 # 5. Save to /public/dateposteddata.json
 # -----------------------------------------
-with open("../frontend/public/dateposteddata.json", "w") as f:
+with open("frontend/public/dateposteddata.json", "w") as f:
     json.dump(data, f, indent=2)
 
 print("dateposteddata.json created successfully!")

@@ -46,7 +46,7 @@ data = [dict(zip(columns, row)) for row in rows]
 # -----------------------------------------
 # 5. Save to /public/regionsdata.json
 # -----------------------------------------
-with open("../frontend/public/regionsdata.json", "w") as f:
+with open("frontend/public/regionsdata.json", "w") as f:
     json.dump(data, f, indent=2)
 
 print("regionsdata.json created successfully!")
